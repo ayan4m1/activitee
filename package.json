@@ -1,0 +1,28 @@
+{
+  "name": "activitee",
+  "version": "0.1.0",
+  "description": "",
+  "author": "ayan4m1 <andrew@bulletlogic.com>",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "globby": "^13.2.1",
+    "webtorrent": "^2.1.11",
+    "winston": "^3.9.0"
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.22.5",
+    "eslint": "^8.44.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-import-resolver-node": "^0.3.7",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-prettier": "^4.2.1",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.3",
+    "prettier": "^2.8.8"
+  }
+}
