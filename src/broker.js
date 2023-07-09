@@ -24,7 +24,8 @@ const log = getLogger('broker');
     bindHandlers(
       connection,
       {
-        publish: ({ content }) => dispatch(localConn, 'download', content)
+        publish: ({ content }) =>
+          dispatch(localConn, `${federation.hostname}:download`, content)
       },
       instance
     );
@@ -38,7 +39,7 @@ const log = getLogger('broker');
     {
       publish: ({ content }) => {
         for (const connection of instances.values()) {
-          dispatch(connection, 'publish', content);
+          dispatch(connection, `${federation.hostname}:publish`, content);
         }
       }
     },
