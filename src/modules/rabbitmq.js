@@ -15,20 +15,37 @@ export async function createConnection(url) {
 }
 
 export async function bindHandlers(connection, handlers) {
-  const channelPromises = [];
-  const handlerEntries = Object.entries(handlers);
+  try {
+    const channelPromises = [];
+    const handlerEntries = Object.entries(handlers);
 
-  for (let i = 0; i < handlerEntries.length; i++) {
-    channelPromises.push(connection.createChannel());
+    for (let i = 0; i < handlerEntries.length; i++) {
+      channelPromises.push(connection.createChannel());
+    }
+
+    const channels = await Promise.all(channelPromises);
+
+    await Promise.all(
+      channels.map((channel, i) => channel.assertQueue(handlerEntries[i][0]))
+    );
+
+    for (let i = 0; i < handlerEntries.length; i++) {
+      channels[i].consume(...handlerEntries[i]);
+    }
+  } catch (error) {
+    log.error(error);
   }
+}
 
-  const channels = await Promise.all(channelPromises);
+export async function dispatch(connection, queue, data) {
+  try {
+    const channel = await connection.createChannel();
 
-  await Promise.all(
-    channels.map((channel, i) => channel.assertQueue(handlerEntries[i][0]))
-  );
-
-  for (let i = 0; i < handlerEntries.length; i++) {
-    channels[i].consume(...handlerEntries[i]);
+    channel.sendToQueue(
+      queue,
+      Buffer.isBuffer(data) ? data : Buffer.from(data, 'utf-8')
+    );
+  } catch (error) {
+    log.error(error);
   }
 }
