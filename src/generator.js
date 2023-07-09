@@ -15,8 +15,9 @@ const bucket = new FlushBucket((items) =>
   )
 );
 
+bucket.flushIntervalSec = 180;
 bucket.start();
 setInterval(
   () => bucket.pushItem({ value: Math.random() }),
-  Math.ceil(Math.random() * 100)
+  Math.ceil(Math.random() * 1000)
 );
