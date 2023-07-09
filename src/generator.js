@@ -7,11 +7,13 @@ const log = getLogger('generator');
 const conn = await createConnection('amqp://localhost');
 
 log.info('Starting periodic flush of data');
-const bucket = new FlushBucket((items) => {
-  const buffer = Buffer.from(JSON.stringify(items), 'utf-8');
-  dispatch(conn, `${federation.hostname}:publish`, buffer);
-  dispatch(conn, `${federation.hostname}:seed`, buffer);
-});
+const bucket = new FlushBucket((items) =>
+  dispatch(
+    conn,
+    `${federation.hostname}:publish`,
+    Buffer.from(JSON.stringify(items), 'utf-8')
+  )
+);
 
 bucket.flushIntervalSec = 180;
 bucket.start();

@@ -17,7 +17,7 @@ const conn = await createConnection('amqp://localhost');
         log.info(`Asked to download ${infoHash}`);
         downloadTorrent(content.toString());
       },
-      seed: async ({ content }) => {
+      publish: async ({ content }) => {
         const torrent = await createTorrent(content);
         log.info(`Seeding ${torrent.infoHash}`);
       }
