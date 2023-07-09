@@ -10,7 +10,10 @@ const log = getLogger('bt');
 const client = new WebTorrent({
   torrentPort: torrentConfig.port,
   dhtPort: torrentConfig.dhtPort,
-  tracker: false
+  dht: false,
+  tracker: false,
+  utp: false,
+  webSeeds: false
 });
 
 export const resume = async () => {
