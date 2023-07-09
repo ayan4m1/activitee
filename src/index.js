@@ -1,5 +1,5 @@
 import { federation } from './modules/config.js';
-import { createTorrent, downloadTorrent, resume } from './modules/bt.js';
+import { createTorrent, downloadTorrent } from './modules/bt.js';
 import { getLogger } from './modules/logging.js';
 import { bindHandlers, createConnection } from './modules/rabbitmq.js';
 
@@ -25,6 +25,6 @@ const conn = await createConnection('amqp://localhost');
     federation.hostname
   );
 
-  log.info('Seeding existing torrents');
-  resume();
+  // log.info('Seeding existing torrents');
+  // resume();
 })();
