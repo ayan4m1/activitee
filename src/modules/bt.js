@@ -9,7 +9,8 @@ import { getLogger } from './logging.js';
 const log = getLogger('bt');
 const client = new WebTorrent({
   torrentPort: torrentConfig.port,
-  dhtPort: torrentConfig.dhtPort
+  dhtPort: torrentConfig.dhtPort,
+  tracker: false
 });
 
 export const resume = async () => {
