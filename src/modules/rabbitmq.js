@@ -8,7 +8,8 @@ export async function createConnection(url) {
   try {
     return await amqplib.connect(url);
   } catch (error) {
-    log.error(error);
+    log.error(error.message);
+    log.error(error.stack);
   }
 
   return null;
@@ -42,7 +43,8 @@ export async function bindHandlers(connection, handlers, hostname = '') {
       );
     }
   } catch (error) {
-    log.error(error);
+    log.error(error.message);
+    log.error(error.stack);
   }
 }
 
@@ -55,6 +57,7 @@ export async function dispatch(connection, queue, data) {
       Buffer.isBuffer(data) ? data : Buffer.from(data, 'utf-8')
     );
   } catch (error) {
-    log.error(error);
+    log.error(error.message);
+    log.error(error.stack);
   }
 }
