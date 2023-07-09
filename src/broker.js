@@ -17,19 +17,27 @@ const log = getLogger('broker');
     const connection = await createConnection(`amqp://${instance}`);
 
     // listen for publish messages from other instance, send them to torrenter
-    bindHandlers(connection, {
-      publish: ({ content }) => dispatch(localConn, 'download', content)
-    });
+    bindHandlers(
+      connection,
+      {
+        publish: ({ content }) => dispatch(localConn, 'download', content)
+      },
+      instance
+    );
 
     instances.set(instance, connection);
   }
 
   // listen for broadcast messages from generator, forward them to all instances
-  bindHandlers(localConn, {
-    publish: ({ content }) => {
-      for (const connection of instances.values()) {
-        dispatch(connection, 'publish', content);
+  bindHandlers(
+    localConn,
+    {
+      publish: ({ content }) => {
+        for (const connection of instances.values()) {
+          dispatch(connection, 'publish', content);
+        }
       }
-    }
-  });
+    },
+    federation.hostname
+  );
 })();

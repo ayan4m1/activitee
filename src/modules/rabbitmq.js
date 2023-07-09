@@ -14,7 +14,7 @@ export async function createConnection(url) {
   return null;
 }
 
-export async function bindHandlers(connection, handlers) {
+export async function bindHandlers(connection, handlers, hostname = '') {
   try {
     const channelPromises = [];
     const handlerEntries = Object.entries(handlers);
@@ -26,7 +26,13 @@ export async function bindHandlers(connection, handlers) {
     const channels = await Promise.all(channelPromises);
 
     await Promise.all(
-      channels.map((channel, i) => channel.assertQueue(handlerEntries[i][0]))
+      channels.map((channel, i) =>
+        channel.assertQueue(
+          hostname
+            ? `${hostname}:${handlerEntries[i][0]}`
+            : handlerEntries[i][0]
+        )
+      )
     );
 
     for (let i = 0; i < handlerEntries.length; i++) {

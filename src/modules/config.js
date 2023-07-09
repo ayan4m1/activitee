@@ -11,5 +11,6 @@ export const torrent = {
 };
 
 export const federation = {
+  hostname: process.env.ACT_FEDERATION_HOSTNAME,
   instances: (process.env.ACT_FEDERATION_INSTANCES || '').split(',')
 };
