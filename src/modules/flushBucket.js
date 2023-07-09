@@ -27,7 +27,10 @@ export class FlushBucket {
       return;
     }
 
-    this.taskHandle = setInterval(this.flush, this.flushIntervalSec * 1000);
+    this.taskHandle = setInterval(
+      this.flush,
+      this.flushIntervalSec * 60 * 1000
+    );
     this.running = true;
   }
 
