@@ -1,18 +1,34 @@
 import amqplib from 'amqplib';
 
-const conn = await amqplib.connect('amqp://localhost');
+import { getLogger } from './logging.js';
 
-export async function bindHandlers(onDownload, onSeed) {
-  const [downloadChannel, seedChannel] = await Promise.all([
-    conn.createChannel(),
-    conn.createChannel()
-  ]);
+const log = getLogger('rabbit');
 
-  await Promise.all([
-    downloadChannel.assertQueue('download'),
-    seedChannel.assertQueue('seed')
-  ]);
+export async function createConnection(url) {
+  try {
+    return await amqplib.connect(url);
+  } catch (error) {
+    log.error(error);
+  }
 
-  downloadChannel.consume('download', onDownload);
-  seedChannel.consume('seed', onSeed);
+  return null;
+}
+
+export async function bindHandlers(connection, handlers) {
+  const channelPromises = [];
+  const handlerEntries = Object.entries(handlers);
+
+  for (let i = 0; i < handlerEntries.length; i++) {
+    channelPromises.push(connection.createChannel());
+  }
+
+  const channels = await Promise.all(channelPromises);
+
+  await Promise.all(
+    channels.map((channel, i) => channel.assertQueue(handlerEntries[i][0]))
+  );
+
+  for (let i = 0; i < handlerEntries.length; i++) {
+    channels[i].consume(...handlerEntries[i]);
+  }
 }

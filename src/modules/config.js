@@ -9,3 +9,7 @@ export const torrent = {
   port: parseInt(process.env.ACT_TORRENT_PORT || '1234', 10),
   dhtPort: parseInt(process.env.ACT_TORRENT_DHT_PORT || '6881', 10)
 };
+
+export const federation = {
+  instances: (process.env.ACT_FEDERATION_INSTANCES || '').split(',')
+};

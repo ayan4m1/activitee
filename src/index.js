@@ -3,17 +3,19 @@
 // import { FlushBucket } from './modules/flushBucket.js';
 import { createTorrent, downloadTorrent, resume } from './modules/bt.js';
 import { getLogger } from './modules/logging.js';
-import { bindHandlers } from './modules/rabbitmq.js';
+import { bindHandlers, createConnection } from './modules/rabbitmq.js';
 
 // const { writeFile } = jsonfile;
-const log = getLogger('app');
+const log = getLogger('torrenter');
+const conn = await createConnection('amqp://localhost');
 
 (async () => {
   log.info('Listening to RabbitMQ messages');
-  bindHandlers(
-    ({ content }) => downloadTorrent(content.toString()),
-    ({ content }) => createTorrent(content)
-  );
+  bindHandlers(conn, {
+    download: ({ content }) => downloadTorrent(content.toString()),
+    seed: ({ content }) => createTorrent(content)
+  });
+
   log.info('Seeding existing torrents');
   resume();
 
