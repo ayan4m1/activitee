@@ -24,12 +24,21 @@ export const resume = async () => {
   return torrents;
 };
 
+export const downloadTorrent = (infoHash) => client.add(infoHash);
+
 export const createTorrent = (data) =>
   new Promise((resolve) => {
-    client.seed(Buffer.from(data, 'utf-8'), (torrent) => {
-      writeFile(`./torrents/${torrent.infoHash}.torrent`, torrent.torrentFile, {
-        encoding: 'utf-8'
-      });
-      resolve(torrent);
-    });
+    client.seed(
+      Buffer.isBuffer(data) ? data : Buffer.from(data, 'utf-8'),
+      (torrent) => {
+        writeFile(
+          `./torrents/${torrent.infoHash}.torrent`,
+          torrent.torrentFile,
+          {
+            encoding: 'utf-8'
+          }
+        );
+        resolve(torrent);
+      }
+    );
   });
