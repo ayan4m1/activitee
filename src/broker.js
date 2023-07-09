@@ -16,6 +16,10 @@ const log = getLogger('broker');
   for (const instance of federation.instances) {
     const connection = await createConnection(`amqp://${instance}`);
 
+    if (!connection) {
+      continue;
+    }
+
     // listen for publish messages from other instance, send them to torrenter
     bindHandlers(
       connection,
