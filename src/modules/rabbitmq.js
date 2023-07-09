@@ -36,7 +36,10 @@ export async function bindHandlers(connection, handlers, hostname = '') {
     );
 
     for (let i = 0; i < handlerEntries.length; i++) {
-      channels[i].consume(...handlerEntries[i]);
+      channels[i].consume(
+        hostname ? `${hostname}:${handlerEntries[i][0]}` : handlerEntries[i][0],
+        handlerEntries[i][1]
+      );
     }
   } catch (error) {
     log.error(error);
