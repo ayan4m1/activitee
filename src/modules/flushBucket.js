@@ -9,6 +9,10 @@ export class FlushBucket {
   constructor(flusher) {
     this.items = [];
     this.flusher = flusher;
+    this.pushItem = this.pushItem.bind(this);
+    this.start = this.start.bind(this);
+    this.stop = this.stop.bind(this);
+    this.flush = this.flush.bind(this);
   }
 
   pushItem(item) {
