@@ -1,4 +1,4 @@
-import { federation } from 'modules/config.js';
+import { federation } from './modules/config.js';
 import { createTorrent, downloadTorrent, resume } from './modules/bt.js';
 import { getLogger } from './modules/logging.js';
 import { bindHandlers, createConnection } from './modules/rabbitmq.js';
