@@ -13,6 +13,8 @@ services:
       - ACT_RABBIT_HOSTNAME
       - ACT_RABBIT_USERNAME
       - ACT_RABBIT_PASSWORD
+    volumes:
+      - torrents:/usr/share/app/torrents
   broker:
     image: activitee/broker
     build:
@@ -39,3 +41,5 @@ services:
       - ACT_RABBIT_HOSTNAME
       - ACT_RABBIT_USERNAME
       - ACT_RABBIT_PASSWORD
+volumes:
+  torrents:
