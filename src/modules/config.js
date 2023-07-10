@@ -10,6 +10,12 @@ export const torrent = {
   dhtPort: parseInt(process.env.ACT_TORRENT_DHT_PORT || '6881', 10)
 };
 
+export const rabbit = {
+  hostname: process.env.ACT_RABBIT_HOSTNAME,
+  username: process.env.ACT_RABBIT_USERNAME,
+  password: process.env.ACT_RABBIT_PASSWORD
+};
+
 export const federation = {
   hostname: process.env.ACT_FEDERATION_HOSTNAME,
   instances: (process.env.ACT_FEDERATION_INSTANCES || '').split(',')

@@ -1,8 +1,15 @@
 import amqplib from 'amqplib';
 
+import { rabbit } from './config.js';
 import { getLogger } from './logging.js';
 
 const log = getLogger('rabbit');
+
+export function createLocalConnection() {
+  return createConnection(
+    `amqp://${rabbit.username}:${rabbit.password}@${rabbit.hostname}`
+  );
+}
 
 export async function createConnection(url) {
   try {

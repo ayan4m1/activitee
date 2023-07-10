@@ -1,10 +1,10 @@
 import { federation } from './modules/config.js';
 import { createTorrent, downloadTorrent } from './modules/bt.js';
 import { getLogger } from './modules/logging.js';
-import { bindHandlers, createConnection } from './modules/rabbitmq.js';
+import { bindHandlers, createLocalConnection } from './modules/rabbitmq.js';
 
 const log = getLogger('torrenter');
-const conn = await createConnection('amqp://localhost');
+const conn = await createLocalConnection();
 
 (async () => {
   log.info('Listening to RabbitMQ messages');
