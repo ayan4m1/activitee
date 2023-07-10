@@ -1,3 +1,5 @@
+import { mkdirp } from 'mkdirp';
+
 import { federation } from './modules/config.js';
 import { createTorrent, downloadTorrent } from './modules/bt.js';
 import { getLogger } from './modules/logging.js';
@@ -10,6 +12,8 @@ import {
 const log = getLogger('torrenter');
 
 (async () => {
+  await mkdirp('./torrents/data');
+
   const conn = await createLocalConnection();
 
   log.info('Listening to RabbitMQ messages');

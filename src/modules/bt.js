@@ -25,7 +25,10 @@ export const resume = async () => {
   return torrents;
 };
 
-export const downloadTorrent = (infoHash) => client.add(infoHash);
+export const downloadTorrent = (infoHash) =>
+  client.add(infoHash, {
+    path: './torrents/data/'
+  });
 
 export const createTorrent = (data) =>
   new Promise((resolve) => {
