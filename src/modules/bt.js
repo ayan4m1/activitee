@@ -10,10 +10,7 @@ const log = getLogger('bt');
 const client = new WebTorrent({
   torrentPort: torrentConfig.port,
   dhtPort: torrentConfig.dhtPort,
-  dht: false,
-  tracker: false,
-  utp: false,
-  webSeeds: false
+  tracker: false
 });
 
 export const resume = async () => {
@@ -22,7 +19,7 @@ export const resume = async () => {
 
   for (const file of files) {
     log.info(`Seeding ${file}`);
-    torrents.push(client.add(file));
+    torrents.push(client.add(file, { announce: [] }));
   }
 
   return torrents;
@@ -34,6 +31,7 @@ export const createTorrent = (data) =>
   new Promise((resolve) => {
     client.seed(
       Buffer.isBuffer(data) ? data : Buffer.from(data, 'utf-8'),
+      { announce: [] },
       (torrent) => {
         writeFile(
           `./torrents/${torrent.infoHash}.torrent`,
