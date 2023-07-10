@@ -1,12 +1,15 @@
 {
   "name": "activitee",
+  "private": true,
   "version": "0.1.0",
-  "description": "",
+  "description": "Better than ActivityPub",
   "author": "ayan4m1 <andrew@bulletlogic.com>",
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "start": "node src/index.js"
+    "start:torrent": "node src/torrent.js",
+    "start:broker": "node src/broker.js",
+    "start:generator": "node src/generator.js"
   },
   "dependencies": {
     "amqplib": "^0.10.3",
