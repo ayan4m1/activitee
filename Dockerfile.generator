@@ -1,8 +1,8 @@
 FROM node:18-alpine
 
-WORKDIR /usr/src/app
+COPY . /usr/share/app
 
-COPY . .
+WORKDIR /usr/src/app
 
 RUN npm ci
 
