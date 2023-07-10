@@ -1,0 +1,41 @@
+version: '3.8'
+services:
+  torrent:
+    image: activitee/torrent
+    build:
+      context: ./
+      dockerfile: Dockerfile.torrent
+    environment:
+      - ACT_LOG_LEVEL
+      - ACT_LOG_TIME_FMT
+      - ACT_FEDERATION_INSTANCES
+      - ACT_FEDERATION_HOSTNAME
+      - ACT_RABBIT_HOSTNAME
+      - ACT_RABBIT_USERNAME
+      - ACT_RABBIT_PASSWORD
+  broker:
+    image: activitee/broker
+    build:
+      context: ./
+      dockerfile: Dockerfile.broker
+    environment:
+      - ACT_LOG_LEVEL
+      - ACT_LOG_TIME_FMT
+      - ACT_FEDERATION_INSTANCES
+      - ACT_FEDERATION_HOSTNAME
+      - ACT_RABBIT_HOSTNAME
+      - ACT_RABBIT_USERNAME
+      - ACT_RABBIT_PASSWORD
+  generator:
+    image: activitee/generator
+    build:
+      context: ./
+      dockerfile: Dockerfile.generator
+    environment:
+      - ACT_LOG_LEVEL
+      - ACT_LOG_TIME_FMT
+      - ACT_FEDERATION_INSTANCES
+      - ACT_FEDERATION_HOSTNAME
+      - ACT_RABBIT_HOSTNAME
+      - ACT_RABBIT_USERNAME
+      - ACT_RABBIT_PASSWORD
