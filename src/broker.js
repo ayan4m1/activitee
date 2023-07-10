@@ -43,8 +43,12 @@ const log = getLogger('broker');
   bindHandlers(
     localConn,
     {
-      infoHash: ({ content }) =>
-        dispatch(localConn, `${federation.hostname}:download`, content)
+      infoHash: ({ content }) => {
+        log.info(`Broadcasting infohash ${content.toString()}`);
+        for (const [hostname, connection] of instances.entries()) {
+          dispatch(connection, `${hostname}:download`, content);
+        }
+      }
     },
     federation.hostname
   );
