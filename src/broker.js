@@ -12,8 +12,10 @@ const log = getLogger('broker');
 (async () => {
   log.info('Connecting to localhost');
   const localConn = await createLocalConnection();
+
   log.info(`Connecting to ${federation.instances.length} instances`);
   const instances = new Map();
+
   for (const instanceUrl of federation.instances) {
     const hostname = instanceUrl.substring(instanceUrl.lastIndexOf('@') + 1);
     const connection = await createConnection(`amqp://${instanceUrl}`);
@@ -26,9 +28,9 @@ const log = getLogger('broker');
     bindHandlers(
       connection,
       {
-        publish: ({ content }) => {
+        infoHash: ({ content }) => {
           log.info(`${hostname} sent us infohash ${content.toString()}`);
-          dispatch(localConn, `${federation.hostname}:download`, content);
+          dispatch(localConn, `${hostname}:download`, content);
         }
       },
       hostname
@@ -41,12 +43,8 @@ const log = getLogger('broker');
   bindHandlers(
     localConn,
     {
-      publish: ({ content }) => {
-        log.info(`Broadcasting infohash ${content.toString()}`);
-        for (const connection of instances.values()) {
-          dispatch(connection, `${federation.hostname}:publish`, content);
-        }
-      }
+      infoHash: ({ content }) =>
+        dispatch(localConn, `${federation.hostname}:download`, content)
     },
     federation.hostname
   );
